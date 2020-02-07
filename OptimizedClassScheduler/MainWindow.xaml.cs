@@ -147,7 +147,7 @@ namespace OptimizedClassScheduler
                 CourseYear = editCoursesCourseYearComboBox.SelectedIndex,
                 CourseSemester = editCoursesCourseSemesterComboBox.SelectedIndex,
                 CourseTeacher1 = editCoursesCourseTeacher1ComboBox.SelectedValue,
-                CourseTeacher2 = editCoursesCourseTeacher2ComboBox.SelectedValue
+                CourseTeacher2 = editCoursesCourseTeacher2ComboBox.SelectedValue,
             };
             string jsonData = JsonConvert.SerializeObject(courses);
 
