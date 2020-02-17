@@ -6,109 +6,177 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:OptimizedClassScheduler"
         mc:Ignorable="d"
-        Title="Optimal Class Scheduler" Height="450" Width="975" MinWidth="500" MinHeight="300" FontFamily="Microsoft JhengHei UI Light" WindowStyle="SingleBorderWindow" Background="White">
+        Title="Optimal Class Scheduler" Height="705" Width="1548" MinWidth="500" MinHeight="300" FontFamily="Microsoft JhengHei UI Light" WindowStyle="SingleBorderWindow" Background="White">
+
+    <Window.Resources>
+        <local:CardinalToOrdinalConverter x:Key="CardinalToOrdinalConverter"/>
+        <DataTemplate x:Key="RoutineLevel2">
+            <Label Content="{Binding}" Width="90" FontFamily="Microsoft JhengHei UI" Height="50" HorizontalContentAlignment="Center" BorderBrush="Black"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RoutineLevel1">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource RoutineLevel2}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
         <Grid x:Name="mainGrid">
-            <Grid.Effect>
-                <BlurEffect Radius="0"/>
-            </Grid.Effect>
             <Grid HorizontalAlignment="Left" Width="146" Background="#FFF1F1F1">
-                <Button x:Name="dashboardButton" HorizontalContentAlignment="Left" Content="Dashboard" BorderBrush="{x:Null}" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Foreground="Black" FontWeight="Bold" Click="DasboardButtonClick" Background="{x:Null}" Height="36" VerticalAlignment="Top"/>
-                <Rectangle x:Name="dashboardRectangle" Margin="0,4,0,0" Height="26" VerticalAlignment="Top" Fill="#FF686868" HorizontalAlignment="Left" Width="4"/>
-                <Rectangle x:Name="editTeachersRectangle" Margin="0,41,138,0" Fill="#FF686868" Width="4" Height="26" VerticalAlignment="Top" HorizontalAlignment="left" Visibility="Hidden"/>
+                <Button x:Name="dashboardButton" HorizontalContentAlignment="Left" Content="Dashboard" BorderBrush="{x:Null}" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Foreground="White" FontWeight="Bold" Click="DasboardButtonClick" Background="#FFB9004C" Height="36" VerticalAlignment="Top"/>
+                <Rectangle x:Name="dashboardRectangle" Margin="0,4,0,0" Height="26" VerticalAlignment="Top" Fill="White" HorizontalAlignment="Left" Width="4"/>
                 <Button x:Name="editTeachersButton" HorizontalContentAlignment="left" Content="Edit Teachers" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Height="36" Foreground="Black" FontWeight="Bold" Click="EditTeachersButtonClick" Margin="0,36,0,0" VerticalAlignment="Top"/>
-                <Rectangle x:Name="editCoursesRectangle" Margin="0,77,138,0" Width="4" Height="26" VerticalAlignment="Top" HorizontalAlignment="left" Fill="#FF686868" Visibility="Hidden"/>
+                <Rectangle x:Name="editTeachersRectangle" Margin="0,41,138,0" Fill="White" Width="4" Height="26" VerticalAlignment="Top" HorizontalAlignment="left"/>
                 <Button x:Name="editCoursesButton" HorizontalContentAlignment="left" Content="Edit Courses" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Height="36" Foreground="Black" FontWeight="Bold" Click="EditCoursesButtonClick" Margin="0,72,0,0" VerticalAlignment="Top"/>
+                <Rectangle x:Name="editCoursesRectangle" Margin="0,77,138,0" Width="4" Height="26" VerticalAlignment="Top" HorizontalAlignment="left" Fill="White"/>
             </Grid>
 
             <Grid x:Name="dashboardGrid" Margin="146,0,0,0" Visibility="Hidden">
                 <Grid Margin="10,10,0,0" HorizontalAlignment="Left" Width="165" Height="57" VerticalAlignment="Top">
                     <ComboBox x:Name="dashboardSemesterComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" Margin="0,31,0,0" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontWeight="Bold" Height="26" Text="--Select Semester--" SelectedIndex="0" FontSize="14" SelectionChanged="DashboardSemesterComboBoxSelectionChanged">
                         <ComboBoxItem Content="--Select Semester--"/>
-                        <ComboBoxItem Content="1st Semester" />
-                        <ComboBoxItem Content="2nd Semester"/>
+                        <ComboBoxItem Content="Odd Semester" />
+                        <ComboBoxItem Content="Even Semester"/>
                     </ComboBox>
                     <Label Content="Semester" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft JhengHei UI Light" FontWeight="Bold" Height="25" Width="165" FontSize="14"/>
                 </Grid>
-                <Grid Margin="410,10,0,0" HorizontalAlignment="Left" Width="165" Height="57" VerticalAlignment="Top">
+                <Grid Margin="0,10,10,0" HorizontalAlignment="Right" Width="165" Height="57" VerticalAlignment="Top">
                     <Label Content="Max. Class for a Teacher" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft JhengHei UI Light" FontWeight="Bold" Height="25" Width="165" FontSize="14"/>
                     <TextBox x:Name="maxClassTeacherTextBox" HorizontalAlignment="Left" Height="14" Margin="0,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" UndoLimit="5" MaxLength="1" MaxLines="1" AutomationProperties.HelpText="test" AutomationProperties.IsRequiredForForm="True" PreviewTextInput="PreviewTextInput" FontSize="14"/>
                 </Grid>
-                <Grid Margin="210,10,0,0" HorizontalAlignment="Left" Width="165" Height="57" VerticalAlignment="Top">
+                <Grid Margin="332,10,324,0" HorizontalAlignment="Center" Width="165" Height="57" VerticalAlignment="Top">
                     <Label Content="Max. Class for a Batch" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft JhengHei UI Light" FontWeight="Bold" Height="25" Width="165" FontSize="14"/>
                     <TextBox x:Name="maxClassYearTextBox" HorizontalAlignment="Left" Height="14" Margin="0,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" UndoLimit="5" MaxLength="1" MaxLines="1" AutomationProperties.HelpText="test" AutomationProperties.IsRequiredForForm="True" PreviewTextInput="PreviewTextInput" FontSize="14"/>
                 </Grid>
-                <Grid Margin="10,99,0,10" HorizontalAlignment="Left" Width="365">
-                    <DataGrid x:Name="dashboardDataGrid" Margin="0,28,0,0" FontSize="14" BorderBrush="#FF686868" GridLinesVisibility="All" VerticalGridLinesBrush="#FF0A0A29" HorizontalGridLinesBrush="#FF2323B6"/>
-                    <Label Content="List of Courses and Assigned Teachers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="280" FontSize="14"/>
+                <Grid Margin="10,99,161,10">
+                    <DataGrid x:Name="dashboardDataGrid" AutoGenerateColumns="False" Margin="0,49,0,0" FontFamily="Microsoft JhengHei UI Light" FontSize="14" IsReadOnly="True" GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Code" Binding="{Binding CourseCode}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Title" Binding="{Binding CourseTitle}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Year" Binding="{Binding CourseYear, Converter={StaticResource CardinalToOrdinalConverter}}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Teacher 1" Binding="{Binding CourseTeacherShortName.Item1}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Teacher 2" Binding="{Binding CourseTeacherShortName.Item2}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Credit" Binding="{Binding CourseCredit}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Label Content="List of Courses and Assigned Teachers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" FontSize="18" FontFamily="Microsoft JhengHei UI" FontWeight="Bold" Height="44" Margin="10,5,0,0"/>
                 </Grid>
-                <Grid Margin="461,342,0,0" HorizontalAlignment="Left" Width="114" Height="67" VerticalAlignment="Top">
+                <Grid Margin="0,0,10,10" Height="67" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="114">
                     <Button Content="Fix Classes" HorizontalAlignment="Right" Height="31" VerticalAlignment="Bottom" Width="114" Margin="0,0,0,36"/>
                     <Button Content="Create Routine" Height="31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="114" Click="CreateRoutineButtonClick"/>
                 </Grid>
             </Grid>
 
-            <Grid x:Name="editTeachersGrid" Margin="146,0,0,0" Visibility="Hidden">
-                <Grid Margin="10,10,0,10" HorizontalAlignment="Left" Width="246">
-                    <ListBox Margin="0,30,0,0" FontFamily="Microsoft JhengHei UI Light" FontSize="14" BorderBrush="#FFD80000" Background="#FFE4E4E4"/>
-                    <Label Content="Teachers List" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
+            <Grid x:Name="editTeachersGrid" Margin="146,0,0,0" Visibility="Visible">
+                <Grid Margin="10,10,373,10">
+                    <DataGrid x:Name="teacherDataGrid" AutoGenerateColumns="False" Margin="0,35,0,0" FontFamily="Microsoft JhengHei UI Light" FontSize="14" GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Short Name" Binding="{Binding TeacherShortName}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Full name" Binding="{Binding TeacherName}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Department" Binding="{Binding TeacherDept}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Label Content="Teachers List" HorizontalAlignment="Left" VerticalAlignment="Top" Width="122" FontFamily="Microsoft JhengHei UI" FontSize="18" Height="30" FontWeight="Bold"/>
                 </Grid>
-                <TextBox x:Name="TeacherNameTextBox" HorizontalAlignment="Left" Height="31" Margin="360,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. MD. Mahbubur Rahman" TabIndex="1"/>
-                <Label Content="Teachers Details" HorizontalAlignment="Left" Margin="360,34,0,0" VerticalAlignment="Top" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
-                <Label Content="Name:" HorizontalAlignment="Left" Margin="303,67,0,0" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
-                <TextBox x:Name="TeacherDeptTextBox" HorizontalAlignment="Left" Height="31" Margin="360,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. IEM" TabIndex="2"/>
-                <Label Content="Deptartment:" HorizontalAlignment="Left" Margin="261,103,0,0" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
-                <Button Content="Discard" HorizontalAlignment="Left" Margin="453,207,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" TabIndex="4"/>
-                <Button Content="Remove" HorizontalAlignment="Left" Margin="533,207,0,0" VerticalAlignment="Top" Width="75" Height="28" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFBD3030" Foreground="White" TabIndex="5"/>
-                <TextBox x:Name="TeacherShortNameTextBox" HorizontalAlignment="Left" Height="31" Margin="360,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" AutomationProperties.HelpText="Ex. M.M.R." AutomationProperties.IsRequiredForForm="True" Controls:TextBoxHelper.Watermark="eg. M.M.R." TabIndex="3"/>
-                <Label Content="Short Name:" HorizontalAlignment="Left" Margin="265,139,0,0" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
-                <Button Content="Save" HorizontalAlignment="Left" Margin="373,207,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" TabIndex="4" Click="TeacherSaveButtonClick"/>
-                <Label Content="NB: Short name should be unique" HorizontalAlignment="Left" Margin="360,170,0,0" VerticalAlignment="Top" Height="22" FontFamily="Microsoft JhengHei UI" FontSize="10" Foreground="#FFFF4528" Width="258" Background="{x:Null}"/>
+                <Grid Margin="0,10,10,0" HorizontalAlignment="Right" Width="358" Height="252" VerticalAlignment="Top">
+                    <TextBox x:Name="TeacherNameTextBox" HorizontalAlignment="Left" Height="31" Margin="99,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. MD. Mahbubur Rahman" TabIndex="1"/>
+                    <Label Content="Teachers Details" Margin="100,0,101,0" VerticalAlignment="Top" FontFamily="Microsoft JhengHei UI" FontSize="18" FontWeight="Bold"/>
+                    <Label Content="Name:" HorizontalAlignment="Left" Margin="42,53,0,0" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
+                    <TextBox x:Name="TeacherDeptTextBox" HorizontalAlignment="Left" Height="31" Margin="99,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. IEM" TabIndex="2"/>
+                    <Label Content="Deptartment:" HorizontalAlignment="Left" Margin="0,89,0,0" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
+                    <Button Content="Discard" HorizontalAlignment="Left" Margin="192,193,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" TabIndex="4"/>
+                    <Button Content="Remove" HorizontalAlignment="Left" Margin="272,193,0,0" VerticalAlignment="Top" Width="75" Height="28" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFFF3131" Foreground="White" TabIndex="5"/>
+                    <TextBox x:Name="TeacherShortNameTextBox" HorizontalAlignment="Left" Height="31" Margin="99,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" AutomationProperties.HelpText="Ex. M.M.R." AutomationProperties.IsRequiredForForm="True" Controls:TextBoxHelper.Watermark="eg. M.M.R." TabIndex="3"/>
+                    <Label Content="Short Name:" HorizontalAlignment="Left" Margin="4,125,0,0" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
+                    <Button Content="Save" HorizontalAlignment="Left" Margin="112,193,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" TabIndex="4" Click="TeacherSaveButtonClick"/>
+                    <Label Content="NB: Short name should be unique" HorizontalAlignment="Left" Margin="99,156,0,0" VerticalAlignment="Top" Height="22" FontFamily="Microsoft JhengHei UI" FontSize="10" Foreground="#FFFF4528" Width="258" Background="{x:Null}"/>
+                </Grid>
             </Grid>
 
-            <Grid x:Name="editCoursesGrid" Margin="146,0,0,0" Visibility="Visible">
+            <Grid x:Name="editCoursesGrid" Margin="146,0,0,0" Visibility="Hidden">
                 <Grid Margin="0,11,10,0" HorizontalAlignment="Right" Width="399" Height="329" VerticalAlignment="Top">
-                    <TextBox x:Name="editCoursesCourseTitleTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="277" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. Engineering Materials" TabIndex="1" Margin="122,56,0,0"/>
-                    <Label Content="Course Details" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Arial" FontSize="14" FontWeight="Bold" Width="117" Margin="158,0,0,0"/>
+                    <TextBox x:Name="editCoursesCourseTitleTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="277" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. Engineering Materials" Margin="122,56,0,0" TabIndex="0"/>
+                    <Label Content="Course Details" VerticalAlignment="Top" FontFamily="Microsoft JhengHei UI" FontSize="18" FontWeight="Bold" Margin="130,0"/>
                     <Label HorizontalContentAlignment="Right" Content="Course Title:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="117" Margin="0,56,0,0"/>
-                    <TextBox x:Name="editCoursesCourseCodeTextTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="73                      " BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. IPE" TabIndex="2" Margin="122,128,0,0"/>
+                    <TextBox x:Name="editCoursesCourseCodeTextTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="73                      " BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. IPE" Margin="122,128,0,0" TabIndex="3"/>
                     <Label HorizontalContentAlignment="Right" Content="Course Code:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="117" Margin="0,128,0,0"/>
                     <Label HorizontalContentAlignment="Right" Content="Course Teachers:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Margin="0,164,0,0"/>
-                    <ComboBox x:Name="editCoursesCourseTeacher1ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="277" Height="31" BorderBrush="#FF686868" Margin="122,200,0,0"/>
-                    <ComboBox x:Name="editCoursesCourseTeacher2ComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="277" Height="31" BorderBrush="#FF686868" Margin="122,236,0,0"/>
+                    <ComboBox x:Name="editCoursesCourseTeacher1ComboBox"
+                              DisplayMemberPath="TeacherShortName"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" Width="277" Height="31" BorderBrush="#FF686868" Margin="122,200,0,0" TabIndex="6"/>
+
+                    <ComboBox x:Name="editCoursesCourseTeacher2ComboBox"
+                              DisplayMemberPath="TeacherShortName"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" Width="277" Height="31" BorderBrush="#FF686868" Margin="122,236,0,0" TabIndex="7"/>
                     <Label Content="1." HorizontalContentAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="117" Margin="0,200,0,0"/>
                     <Label Content="2." HorizontalContentAlignment="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="117" Margin="0,236,0,0"/>
-                    <TextBox x:Name="editCoursesCourseCodeNumberTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="73" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. 1203" TabIndex="0" Margin="200,128,0,0"/>
+                    <TextBox x:Name="editCoursesCourseCodeNumberTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="73" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. 1203" Margin="200,128,0,0" TabIndex="4"/>
                     <Label HorizontalContentAlignment="Right" Content="Credit:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="51" Margin="278,128,0,0"/>
-                    <TextBox x:Name="editCoursesCourseCreditTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. 4" TabIndex="1" Margin="334,128,0,0"/>
+                    <TextBox x:Name="editCoursesCourseCreditTextBox" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" BorderBrush="#FF686868" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Controls:TextBoxHelper.Watermark="eg. 4" Margin="334,128,0,0" TabIndex="5"/>
                     <Label HorizontalContentAlignment="Right" Content="Course Year:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="117" Margin="0,92,0,0"/>
                     <Label HorizontalContentAlignment="Right" Content="Semester:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="73" Margin="224,92,0,0"/>
-                    <ComboBox x:Name="editCoursesCourseYearComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="31" SelectedIndex="0" FontSize="14" FontFamily="Microsoft JhengHei UI Light" BorderBrush="#FF686868" Margin="122,92,0,0">
+                    <ComboBox x:Name="editCoursesCourseYearComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="31" SelectedIndex="0" FontSize="14" FontFamily="Microsoft JhengHei UI Light" BorderBrush="#FF686868" Margin="122,92,0,0" TabIndex="1">
                         <ComboBoxItem Content="--Select--"/>
                         <ComboBoxItem Content="First"/>
                         <ComboBoxItem Content="Second"/>
                         <ComboBoxItem Content="Thrid"/>
                         <ComboBoxItem Content="Fourth"/>
                     </ComboBox>
-                    <ComboBox x:Name="editCoursesCourseSemesterComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="31" SelectedIndex="0" FontSize="14" FontFamily="Microsoft JhengHei UI Light" BorderBrush="#FF686868" Margin="302,92,0,0">
+                    <ComboBox x:Name="editCoursesCourseSemesterComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="31" SelectedIndex="0" FontSize="14" FontFamily="Microsoft JhengHei UI Light" BorderBrush="#FF686868" Margin="302,92,0,0" TabIndex="2">
                         <ComboBoxItem Content="--Select--"/>
                         <ComboBoxItem Content="First"/>
                         <ComboBoxItem Content="Second"/>
                     </ComboBox>
-                    <Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" TabIndex="4" Click="CourseSaveButtonClick" Margin="154,301,0,0"/>
-                    <Button Content="Remove" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFBD3030" Foreground="White" TabIndex="5" Margin="314,301,0,0"/>
-                    <Button Content="Discard" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" TabIndex="4" Margin="234,301,0,0"/>
+                    <Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" Click="CourseSaveButtonClick" Margin="154,301,0,0"/>
+                    <Button Content="Remove" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFBD3030" Foreground="White" Margin="314,301,0,0"/>
+                    <Button Content="Discard" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFDDDDDD" BorderBrush="#FFDDDDDD" Margin="234,301,0,0"/>
                 </Grid>
                 <Grid Margin="10,10,409,10">
-                    <Label Content="Courses List" HorizontalAlignment="Left" VerticalAlignment="Top" Width="223" FontFamily="Microsoft JhengHei UI Light" FontSize="14"/>
-                    <DataGrid x:Name="courseDataGrid" Margin="0,49,0,0" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Background="#FFE4E4E4"/>
+                    <Label Content="Courses List" HorizontalAlignment="Left" VerticalAlignment="Top" Width="223" FontFamily="Microsoft JhengHei UI" FontSize="18" Margin="0,-1,0,0" FontWeight="Bold"/>
+                    <DataGrid x:Name="courseDataGrid" AutoGenerateColumns="False" Margin="0,35,0,14" FontFamily="Microsoft JhengHei UI Light" FontSize="14" GridLinesVisibility="Horizontal" CanUserResizeRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Code" Binding="{Binding CourseCode}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Title" Binding="{Binding CourseTitle}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Year" Binding="{Binding CourseYear, Converter={StaticResource CardinalToOrdinalConverter}}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Semester" Binding="{Binding CourseSemester, Converter={StaticResource CardinalToOrdinalConverter}}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Teacher 1" Binding="{Binding CourseTeacherShortName.Item1}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Teacher 2" Binding="{Binding CourseTeacherShortName.Item2}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Credit" Binding="{Binding CourseCredit}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </Grid>
         </Grid>
 
-        <Grid x:Name="routineGrid" Visibility="Hidden">
-            <Rectangle x:Name="routineRectangle" Fill="Black" Opacity="0.5" MouseLeftButtonDown="RoutineRectangleMouseClick"/>
-            <DataGrid x:Name="routineDataGrid" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="500" MinHeight="293" Background="White"/>
+        <Grid x:Name="routineGrid" Visibility="Hidden" HorizontalAlignment="Center" Width="1540">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="30" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+            </Grid.Effect>
+            <Rectangle x:Name="routineRectangle" Fill="Black" Opacity="0.1" MouseLeftButtonUp="RoutineRectangleMouseClick"/>
+            <Grid Margin="329,53,296,76" Height="545" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="915">
+                <Grid Margin="0,10,0,0">
+                    <Grid Margin="0,35,0,0">
+                        <ItemsControl x:Name="routineDataGrid" ItemTemplate="{DynamicResource RoutineLevel1}" Margin="91,61,22,10" BorderBrush="Black"/>
+                        <TextBlock Text="Period 1" TextAlignment="Center" Margin="181,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Period 2" TextAlignment="Center" Margin="271,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Period 3" TextAlignment="Center" Margin="361,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Period 4" TextAlignment="Center" Margin="451,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Period 5" TextAlignment="Center" Margin="541,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Period 6" TextAlignment="Center" Margin="631,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Period 7" TextAlignment="Center" Margin="721,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Period 8" TextAlignment="Center" Margin="811,37,0,0" VerticalAlignment="Top" Width="90" Height="24" FontWeight="ExtraBold" Foreground="#FF440053" FontFamily="Microsoft JhengHei UI" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <Rectangle HorizontalAlignment="Left" Height="4" Margin="88,88,0,0" VerticalAlignment="Top" Width="809" Fill="#FFFF0051"/>
+                    <Rectangle HorizontalAlignment="Left" Height="455" Margin="177,71,0,0" VerticalAlignment="Top" Width="4" Fill="#FFFF0051"/>
+                </Grid>
+                <TextBlock Margin="252,12,227,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" FontFamily="Microsoft JhengHei UI" Height="23" HorizontalAlignment="Center" Width="436"><Run Text="Department of Industrial Engineering and Management"/><LineBreak/><Run/></TextBlock>
+                <TextBlock x:Name="routineSemesterText" TextAlignment="Center" HorizontalAlignment="Center" Margin="364,40,337,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="214" FontSize="14" FontFamily="Microsoft JhengHei UI"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
